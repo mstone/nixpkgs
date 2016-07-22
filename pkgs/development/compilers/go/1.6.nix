@@ -85,7 +85,10 @@ stdenv.mkDerivation rec {
     sed -i '/TestChdirAndGetwd/areturn' src/os/os_test.go
     sed -i '/TestRead0/areturn' src/os/os_test.go
     sed -i '/TestNohup/areturn' src/os/signal/signal_test.go
-    sed -i '/TestSystemRoots/areturn' src/crypto/x509/root_darwin_test.go
+
+    # work around buggy darwin certificate-store-reading code
+    cp src/crypto/x509/root_nocgo_darwin.go src/crypto/x509/root_cgo_darwin.go
+    sed -i 's,!cgo,cgo,' src/crypto/x509/root_cgo_darwin.go
 
     sed -i '/TestGoInstallRebuildsStalePackagesInOtherGOPATH/areturn' src/cmd/go/go_test.go
     sed -i '/TestBuildDashIInstallsDependencies/areturn' src/cmd/go/go_test.go
