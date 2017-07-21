@@ -145,11 +145,14 @@ if [ "$NIX_DONT_SET_RPATH" != 1 ]; then
         done
     done
 
-
     # Finally, add `-rpath' switches.
     for i in $rpath; do
         extra+=(-rpath $i)
     done
+
+    if [ -n "$NIX_COREFOUNDATION_RPATH" ]; then
+      extra+=(-rpath $NIX_COREFOUNDATION_RPATH)
+    fi
 fi
 
 
